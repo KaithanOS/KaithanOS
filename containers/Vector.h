@@ -89,31 +89,26 @@ public:
 
     T remove(int index) {
         T result = get(index);
-        T* new_vector = new T[max_len];
-        for (int i = 0; i < curr_len; i++) {
-            if (i == index) {
-                continue;
-            } else if (i > index) {
-                new_vector[i - 1] = vector[(start + i) % max_len];
-            } else {
-                new_vector[i] = vector[(start + i) % max_len];
-            }
+        for (int i = index; i < curr_len - 1; i++) {
+            vector[(start + i) % max_len] = vector[(start + i + 1) % max_len];
         }
-        delete[] vector;
-        vector = new_vector;
-        start = 0;
         curr_len--;
         return result;
     }
 
     bool remove(T* elem) {
+        bool result = false;
         for (int i = 0; i < curr_len; i++) {
             if (vector[(start + i) % max_len] == *elem) {
-                remove(i);
-                return true;
+                result = true;
+            } else if (result) {
+                vector[(start + i - 1) % max_len] = vector[(start + i) % max_len];
             }
         }
-        return false;
+        if (result) {
+            curr_len--;
+        }
+        return result;
     }
 
     // Push & pop
