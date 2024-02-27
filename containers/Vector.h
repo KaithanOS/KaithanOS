@@ -99,10 +99,10 @@ public:
     bool remove(T* elem) {
         bool result = false;
         for (int i = 0; i < curr_len; i++) {
-            if (vector[(start + i) % max_len] == *elem) {
-                result = true;
-            } else if (result) {
+            if (result) {
                 vector[(start + i - 1) % max_len] = vector[(start + i) % max_len];
+            } else if (vector[(start + i) % max_len] == *elem) {
+                result = true;
             }
         }
         if (result) {
@@ -117,7 +117,7 @@ public:
         if (curr_len + 1 > (3 * max_len) / 4) {
             resize(max_len * 2);
         }
-        vector[start + curr_len] = elem;
+        vector[(start + curr_len) % max_len] = elem;
         curr_len++;
     }
 
@@ -133,7 +133,7 @@ public:
         return result;
     }
 
-    T poll_back() {
+    T peek_back() {
         if (curr_len <= 0) {
             throw runtime_error("Polling from empty vector");
         } else {
@@ -158,12 +158,12 @@ public:
             resize(max_len / 2);
         }
         T result = vector[start];
-        start++;
+        start = start != max_len - 1 ? start + 1 : 0;
         curr_len--;
         return result;
     }
 
-    T poll_front() {
+    T peek_front() {
         if (curr_len <= 0) {
             throw runtime_error("Polling from empty vector");
         } else {

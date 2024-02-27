@@ -72,20 +72,48 @@ int main() {
 //    time(custom_pop_back);
 //    time(standard_pop_back);
 
-    time(custom_push_back);
-    time(custom_remove);
-
-    time(standard_push_back);
-    time(standard_remove);
-
-    time(custom_push_back);
-    time(custom_remove_ptr);
+//    time(custom_push_back);
+//    time(custom_remove);
+//
+//    time(standard_push_back);
+//    time(standard_remove);
+//
+//    time(custom_push_back);
+//    time(custom_remove_ptr);
 
     Vector<int> intvec;
     intvec.push_back(1);
     intvec.push_back(2);
     intvec.push_back(3);
     intvec.push_back(4);
+
+    intvec.debug();
+    cout<<intvec<<"\n";
+
+    intvec.push_front(5);
+    intvec.push_front(6);
+    intvec.push_front(7);
+    intvec.push_front(8);
+
+    intvec.debug();
+    cout<<intvec<<"\n";
+
+    intvec.pop_back();
+    intvec.pop_back();
+    intvec.pop_back();
+    intvec.pop_back();
+    intvec.pop_back();
+
+    intvec.debug();
+    cout<<intvec<<"\n";
+
+    Vector<int> intvec2;
+    intvec2.push_back(8);
+    intvec2.push_back(7);
+    intvec2.push_back(6);
+
+    cout<<(intvec==intvec2)<<"\n";
+
 //    Vector<int> vec2(intvec);
 //    cout<<vec2<<"\n";
 //    intvec.pop_front();
@@ -103,12 +131,11 @@ int main() {
 //    intvec.debug();
 //    intvec2.debug();
 //
-    cout<<intvec<<"\n";
-    int num = 2;
-    int* intptr = &num;
-    cout<<intvec.remove(intptr)<<"\n";
-//    cout<<intvec.pop_back()<<"\n";
-    cout<<intvec<<"\n";
+//    cout<<intvec<<"\n";
+//    int num = 2;
+//    int* intptr = &num;
+//    cout<<intvec.remove(intptr)<<"\n";
+//    cout<<intvec<<"\n";
 //    intvec.push_front(5);
 //    intvec.push_front(6);
 //    intvec.push_front(7);
