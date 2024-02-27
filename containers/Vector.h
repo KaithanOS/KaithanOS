@@ -21,7 +21,7 @@ private:
 
 public:
 
-    // Constructors
+    // Constructors and destructors
 
     Vector() {
         start = 0;
@@ -33,9 +33,13 @@ public:
     Vector(int size, T val) {
         start = 0;
         curr_len = size;
-        max_len = 1;
-        while (max_len < size) {
-            max_len *= 2;
+        if (size < 16) {
+            max_len = 16;
+        } else {
+            max_len = 1;
+            while (max_len < size) {
+                max_len *= 2;
+            }
         }
         vector = new T[max_len];
         for (int i = 0; i < size; i++) {
@@ -51,6 +55,10 @@ public:
         for (int i = 0; i < curr_len; i++) {
             vector[i] = v.vector[(start + i) % v.max_len];
         }
+    }
+
+    ~Vector() {
+        delete[] vector;
     }
 
     // Accessors
