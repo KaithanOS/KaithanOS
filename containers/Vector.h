@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <sstream>
+
 using namespace std;
 
 template <typename T>
@@ -47,19 +48,29 @@ public:
         }
     }
 
-    Vector(Vector<T>& v) {
-        start = 0;
-        curr_len = v.curr_len;
-        max_len = v.max_len;
-        vector = new T[max_len];
-        for (int i = 0; i < curr_len; i++) {
-            vector[i] = v.vector[(start + i) % v.max_len];
-        }
-    }
+//    Vector(Vector<T>& v) {
+//        start = 0;
+//        curr_len = v.curr_len;
+//        max_len = v.max_len;
+//        vector = new T[max_len];
+//        for (int i = 0; i < curr_len; i++) {
+//            vector[i] = v.vector[(start + i) % v.max_len];
+//        }
+//    }
+//
+//    Vector(Vector<T>&& v) noexcept {
+//        start = 0;
+//        curr_len = v.curr_len;
+//        max_len = v.max_len;
+//        vector = new T[max_len];
+//        for (int i = 0; i < curr_len; i++) {
+//            vector[i] = v.vector[(start + i) % v.max_len];
+//        }
+//    }
 
-    ~Vector() {
-        delete[] vector;
-    }
+//    ~Vector() {
+//        delete[] vector;
+//    }
 
     // Accessors
 
@@ -71,12 +82,29 @@ public:
         return curr_len == 0;
     }
 
-    T get(int i) {
+    T& get(int i) {
         if (i < 0 || i >= curr_len) {
             throw runtime_error("Index out of bounds");
         } else {
             return vector[(start + i) % max_len];
         }
+    }
+
+    void set(int i, T val) {
+        if (i < 0 || i >= curr_len) {
+            throw runtime_error("Index out of bounds");
+        } else {
+            vector[(start + i) % max_len] = val;
+        }
+    }
+
+    int index(T val) {
+        for (int i = 0; i < curr_len - 1; i++) {
+            if (vector[(start + i) % max_len] == val) {
+                return (start + i) % max_len;
+            }
+        }
+        return -1;
     }
 
     // Modifiers
@@ -180,6 +208,14 @@ public:
     }
 
     // Override operators
+
+    T& operator[](int i) {
+        if (i < 0 || i >= curr_len) {
+            throw runtime_error("Index out of bounds");
+        } else {
+            return vector[(start + i) % max_len];
+        }
+    }
 
     friend ostream& operator<<(ostream& os, Vector<T>& vec) {
         if (vec.curr_len == 0) {

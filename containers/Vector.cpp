@@ -64,6 +64,12 @@ void custom_remove_ptr() {
     }
 }
 
+void custom_set() {
+    for (int i = 0; i < 8192; i++) {
+        custom_vector.set(i, 5);
+    }
+}
+
 
 int main() {
 //    time(custom_push_back);
@@ -72,20 +78,23 @@ int main() {
 //    time(custom_pop_back);
 //    time(standard_pop_back);
 
-    time(custom_push_back);
-    time(custom_remove);
+//    time(custom_push_back);
+//    time(custom_set);
+//    time(custom_remove);
 
-    time(standard_push_back);
-    time(standard_remove);
+//    time(standard_push_back);
+//    time(standard_remove);
+//
+//    time(custom_push_back);
+//    time(custom_remove_ptr);
 
-    time(custom_push_back);
-    time(custom_remove_ptr);
+    Vector<int> intvec;
+    intvec.push_back(1);
+    intvec.push_back(2);
+    intvec.push_back(3);
+    intvec.push_back(4);
 
-//    Vector<int> intvec;
-//    intvec.push_back(1);
-//    intvec.push_back(2);
-//    intvec.push_back(3);
-//    intvec.push_back(4);
+    cout << intvec[2] << "\n";
 //
 //    intvec.debug();
 //    cout<<intvec<<"\n";
