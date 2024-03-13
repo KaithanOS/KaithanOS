@@ -57,12 +57,13 @@ public:
         if (contains(val)) {
             return false;
         } else if (items + 1 > (3 * buckets) / 4) {
+            cout<<"---------------------"<<"\n";
             Vector<T> bucket;
             Vector<Vector<T> > new_set(2 * buckets, bucket);
             for (int i = 0; i < buckets; i++) {
-                Vector<T> curr = hashset.get(i);
+                Vector<T>& curr = hashset.get(i);
                 for (int j = 0; j < curr.size(); j++) {
-                    T item = curr.get(j);
+                    T& item = curr.get(j);
                     new_set.get(hash_code(item)).push_back(item);
                 }
             }
@@ -72,21 +73,21 @@ public:
 
         Vector<T>& bucket = hashset.get(hash_code(val));
         bucket.push_back(val);
-        cout << hashset.get(hash_code(val)) << "\n";
         items++;
+        debug();
         return true;
     }
 
     bool remove(T val) {
         if (!contains(val)) {
             return false;
-        } else if (buckets > 16 && items - 1 < buckets / 4) {
+        } else if (items + 1 > (3 * buckets) / 4) {
             Vector<T> bucket;
             Vector<Vector<T> > new_set(buckets / 2, bucket);
             for (int i = 0; i < buckets; i++) {
-                Vector<T> curr = hashset.get(i);
+                Vector<T>& curr = hashset.get(i);
                 for (int j = 0; j < curr.size(); j++) {
-                    T item = curr.get(j);
+                    T& item = curr.get(j);
                     new_set.get(hash_code(item)).push_back(item);
                 }
             }
@@ -106,6 +107,12 @@ public:
 
     // Debugging output
 
+    void debug() {
+        for (int i = 0; i < hashset.size(); i++) {
+            cout << hashset.get(i) << "\n";
+        }
+        cout << "size: " << items << "\n";
+    }
 
 };
 

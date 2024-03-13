@@ -45,6 +45,12 @@ void standard_pop_back() {
     }
 }
 
+void custom_peek_back() {
+    for (int i = 0; i < 4096; i++) {
+        custom_vector.peek_back();
+    }
+}
+
 void custom_remove() {
     for (int i = 8191; i >=0; i--) {
         custom_vector.remove(0);
@@ -79,7 +85,6 @@ int main() {
 //    time(standard_pop_back);
 
 //    time(custom_push_back);
-//    time(custom_set);
 //    time(custom_remove);
 
 //    time(standard_push_back);
@@ -94,7 +99,11 @@ int main() {
     intvec.push_back(3);
     intvec.push_back(4);
 
-    cout << intvec[2] << "\n";
+    for (int i : intvec) {
+        cout << i << "\n";
+    }
+//
+//    cout << intvec[2] << "\n";
 //
 //    intvec.debug();
 //    cout<<intvec<<"\n";

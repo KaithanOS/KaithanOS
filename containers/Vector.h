@@ -90,7 +90,7 @@ public:
         }
     }
 
-    void set(int i, T val) {
+    void set(int i, const T& val) {
         if (i < 0 || i >= curr_len) {
             throw runtime_error("Index out of bounds");
         } else {
@@ -109,17 +109,17 @@ public:
 
     // Modifiers
 
-    void resize(int i) {
-        if (i < curr_len) {
+    void resize(int size) {
+        if (size < curr_len) {
             throw runtime_error("Invalid resizing");
         }
-        T* new_vector = new T[i];
+        T* new_vector = new T[size];
         for (int i = 0; i < curr_len; i++) {
             new_vector[i] = vector[(start + i) % max_len];
         }
-        delete[] vector;
+//        delete[] vector;
         vector = new_vector;
-        max_len = i;
+        max_len = size;
         start = 0;
     }
 
@@ -149,8 +149,8 @@ public:
 
     // Push & pop
 
-    void push_back(T elem) {
-        if (curr_len + 1 > (3 * max_len) / 4) {
+    void push_back(const T& elem) {
+        if (curr_len + 1 > max_len) {
             resize(max_len * 2);
         }
         vector[(start + curr_len) % max_len] = elem;
@@ -164,12 +164,12 @@ public:
         if (max_len > 16 && curr_len - 1 < max_len / 4) {
             resize(max_len / 2);
         }
-        T result = vector[start + curr_len - 1];
+        T& result = vector[start + curr_len - 1];
         curr_len--;
         return result;
     }
 
-    T peek_back() {
+    T& peek_back() {
         if (curr_len <= 0) {
             throw runtime_error("Polling from empty vector");
         } else {
@@ -177,8 +177,8 @@ public:
         }
     }
 
-    void push_front (T elem) {
-        if (curr_len + 1 > (3 * max_len) / 4) {
+    void push_front (const T& elem) {
+        if (curr_len + 1 > max_len) {
             resize(max_len * 2);
         }
         start = start != 0 ? start - 1 : max_len - 1;
@@ -193,13 +193,13 @@ public:
         if (max_len > 16 && curr_len - 1 < max_len / 4) {
             resize(max_len / 2);
         }
-        T result = vector[start];
+        T& result = vector[start];
         start = start != max_len - 1 ? start + 1 : 0;
         curr_len--;
         return result;
     }
 
-    T peek_front() {
+    T& peek_front() {
         if (curr_len <= 0) {
             throw runtime_error("Polling from empty vector");
         } else {
@@ -208,6 +208,26 @@ public:
     }
 
     // Override operators
+
+    // Begin Iterator
+    T* begin() {
+        return &vector[start];
+    }
+
+    // End Iterator
+    T* end() {
+        return &vector[(start + curr_len) % max_len];
+    }
+
+    // Dereference Operator
+    T& operator*() {
+        return *vector[start];
+    }
+
+    // Iterator Increment
+    T* operator++() {
+        return ++&vector[start];
+    }
 
     T& operator[](int i) {
         if (i < 0 || i >= curr_len) {

@@ -22,25 +22,25 @@ void time(void (*func)()) {
 }
 
 void custom_add() {
-    for (int i = 0; i < 8192; i++) {
+    for (int i = 0; i < 64; i++) {
         custom_hashset.add(i);
     }
 }
 
 void standard_add() {
-    for (int i = 0; i < 8192; i++) {
+    for (int i = 0; i < 64; i++) {
         standard_hashset.insert(i);
     }
 }
 
 void custom_remove() {
-    for (int i = 0; i < 4096; i++) {
+    for (int i = 0; i < 32; i++) {
         custom_hashset.remove(i);
     }
 }
 
 void standard_remove() {
-    for (int i = 0; i < 4096; i++) {
+    for (int i = 0; i < 32; i++) {
         standard_hashset.erase(i);
     }
 }
@@ -50,6 +50,7 @@ void standard_remove() {
 int main() {
     time(custom_add);
     time(standard_add);
+//    custom_hashset.debug();
     time(custom_remove);
     time(standard_remove);
     cout << custom_hashset.size();
