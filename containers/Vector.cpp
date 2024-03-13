@@ -78,11 +78,11 @@ void custom_set() {
 
 
 int main() {
-    time(custom_push_back);
-    time(standard_push_back);
-
-    time(custom_pop_back);
-    time(standard_pop_back);
+//    time(custom_push_back);
+//    time(standard_push_back);
+//
+//    time(custom_pop_back);
+//    time(standard_pop_back);
 
 //    time(custom_push_back);
 //    time(custom_remove);
@@ -93,11 +93,15 @@ int main() {
 //    time(custom_push_back);
 //    time(custom_remove_ptr);
 
-//    Vector<int> intvec;
-//    intvec.push_back(1);
-//    intvec.push_back(2);
-//    intvec.push_back(3);
-//    intvec.push_back(4);
+    Vector<int> intvec;
+    intvec.push_back(1);
+    intvec.push_back(2);
+    intvec.push_back(3);
+    intvec.push_back(4);
+
+    for (int i : intvec) {
+        cout << i << "\n";
+    }
 //
 //    cout << intvec[2] << "\n";
 //

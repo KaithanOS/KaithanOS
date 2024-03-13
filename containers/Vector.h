@@ -109,17 +109,17 @@ public:
 
     // Modifiers
 
-    void resize(int i) {
-        if (i < curr_len) {
+    void resize(int size) {
+        if (size < curr_len) {
             throw runtime_error("Invalid resizing");
         }
-        T* new_vector = new T[i];
+        T* new_vector = new T[size];
         for (int i = 0; i < curr_len; i++) {
             new_vector[i] = vector[(start + i) % max_len];
         }
-        delete[] vector;
+//        delete[] vector;
         vector = new_vector;
-        max_len = i;
+        max_len = size;
         start = 0;
     }
 
@@ -157,7 +157,7 @@ public:
         curr_len++;
     }
 
-    T& pop_back() {
+    T pop_back() {
         if (curr_len <= 0) {
             throw runtime_error("Popping from empty vector");
         }
@@ -186,7 +186,7 @@ public:
         curr_len++;
     }
 
-    T& pop_front() {
+    T pop_front() {
         if (curr_len <= 0) {
             throw runtime_error("Popping from empty vector");
         }
@@ -208,6 +208,26 @@ public:
     }
 
     // Override operators
+
+    // Begin Iterator
+    T* begin() {
+        return &vector[start];
+    }
+
+    // End Iterator
+    T* end() {
+        return &vector[(start + curr_len) % max_len];
+    }
+
+    // Dereference Operator
+    T& operator*() {
+        return *vector[start];
+    }
+
+    // Iterator Increment
+    T* operator++() {
+        return ++&vector[start];
+    }
 
     T& operator[](int i) {
         if (i < 0 || i >= curr_len) {
