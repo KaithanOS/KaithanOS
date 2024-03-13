@@ -90,7 +90,7 @@ public:
         }
     }
 
-    void set(int i, T val) {
+    void set(int i, const T& val) {
         if (i < 0 || i >= curr_len) {
             throw runtime_error("Index out of bounds");
         } else {
@@ -149,27 +149,27 @@ public:
 
     // Push & pop
 
-    void push_back(T elem) {
-        if (curr_len + 1 > (3 * max_len) / 4) {
+    void push_back(const T& elem) {
+        if (curr_len + 1 > max_len) {
             resize(max_len * 2);
         }
         vector[(start + curr_len) % max_len] = elem;
         curr_len++;
     }
 
-    T pop_back() {
+    T& pop_back() {
         if (curr_len <= 0) {
             throw runtime_error("Popping from empty vector");
         }
         if (max_len > 16 && curr_len - 1 < max_len / 4) {
             resize(max_len / 2);
         }
-        T result = vector[start + curr_len - 1];
+        T& result = vector[start + curr_len - 1];
         curr_len--;
         return result;
     }
 
-    T peek_back() {
+    T& peek_back() {
         if (curr_len <= 0) {
             throw runtime_error("Polling from empty vector");
         } else {
@@ -177,8 +177,8 @@ public:
         }
     }
 
-    void push_front (T elem) {
-        if (curr_len + 1 > (3 * max_len) / 4) {
+    void push_front (const T& elem) {
+        if (curr_len + 1 > max_len) {
             resize(max_len * 2);
         }
         start = start != 0 ? start - 1 : max_len - 1;
@@ -186,20 +186,20 @@ public:
         curr_len++;
     }
 
-    T pop_front() {
+    T& pop_front() {
         if (curr_len <= 0) {
             throw runtime_error("Popping from empty vector");
         }
         if (max_len > 16 && curr_len - 1 < max_len / 4) {
             resize(max_len / 2);
         }
-        T result = vector[start];
+        T& result = vector[start];
         start = start != max_len - 1 ? start + 1 : 0;
         curr_len--;
         return result;
     }
 
-    T peek_front() {
+    T& peek_front() {
         if (curr_len <= 0) {
             throw runtime_error("Polling from empty vector");
         } else {
