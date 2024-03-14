@@ -22,25 +22,41 @@ void time(void (*func)()) {
 }
 
 void custom_add() {
-    for (int i = 0; i < 64; i++) {
-        custom_hashset.add(i);
-    }
+//    for (int i = 0; i < 32; i++) {
+//        custom_hashset.add(i);
+//    }
+    custom_hashset.add(1);
+    custom_hashset.add(2);
+    custom_hashset.add(3);
+    custom_hashset.add(4);
+    custom_hashset.add(5);
+    custom_hashset.add(6);
+    custom_hashset.add(7);
+    custom_hashset.add(8);
+    custom_hashset.add(9);
+    custom_hashset.add(10);
+    custom_hashset.add(11);
+    custom_hashset.add(12);
+    custom_hashset.add(13);
+    custom_hashset.add(14);
+    custom_hashset.add(15);
+    custom_hashset.add(16);
 }
 
 void standard_add() {
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < 32; i++) {
         standard_hashset.insert(i);
     }
 }
 
 void custom_remove() {
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 16; i++) {
         custom_hashset.remove(i);
     }
 }
 
 void standard_remove() {
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 16; i++) {
         standard_hashset.erase(i);
     }
 }

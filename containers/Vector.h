@@ -98,8 +98,8 @@ public:
         }
     }
 
-    int index(T val) {
-        for (int i = 0; i < curr_len - 1; i++) {
+    int index(const T& val) {
+        for (int i = 0; i < curr_len; i++) {
             if (vector[(start + i) % max_len] == val) {
                 return (start + i) % max_len;
             }
