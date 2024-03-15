@@ -44,19 +44,20 @@ public:
         }
         vector = new T[max_len];
         for (int i = 0; i < size; i++) {
-            vector[i] = val;
+            T copy(val);
+            vector[i] = copy;
         }
     }
 
-//    Vector(Vector<T>& v) {
-//        start = 0;
-//        curr_len = v.curr_len;
-//        max_len = v.max_len;
-//        vector = new T[max_len];
-//        for (int i = 0; i < curr_len; i++) {
-//            vector[i] = v.vector[(start + i) % v.max_len];
-//        }
-//    }
+    Vector(const Vector<T>& v) {
+        start = 0;
+        curr_len = v.curr_len;
+        max_len = v.max_len;
+        vector = new T[max_len];
+        for (int i = 0; i < curr_len; i++) {
+            vector[i] = v.vector[(start + i) % v.max_len];
+        }
+    }
 //
 //    Vector(Vector<T>&& v) noexcept {
 //        start = 0;
@@ -101,7 +102,7 @@ public:
     int index(const T& val) {
         for (int i = 0; i < curr_len; i++) {
             if (vector[(start + i) % max_len] == val) {
-                return (start + i) % max_len;
+                return i;
             }
         }
         return -1;
@@ -117,7 +118,7 @@ public:
         for (int i = 0; i < curr_len; i++) {
             new_vector[i] = vector[(start + i) % max_len];
         }
-//        delete[] vector;
+        delete[] vector;
         vector = new_vector;
         max_len = size;
         start = 0;

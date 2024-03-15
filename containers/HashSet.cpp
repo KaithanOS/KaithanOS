@@ -22,41 +22,25 @@ void time(void (*func)()) {
 }
 
 void custom_add() {
-//    for (int i = 0; i < 32; i++) {
-//        custom_hashset.add(i);
-//    }
-    custom_hashset.add(1);
-    custom_hashset.add(2);
-    custom_hashset.add(3);
-    custom_hashset.add(4);
-    custom_hashset.add(5);
-    custom_hashset.add(6);
-    custom_hashset.add(7);
-    custom_hashset.add(8);
-    custom_hashset.add(9);
-    custom_hashset.add(10);
-    custom_hashset.add(11);
-    custom_hashset.add(12);
-    custom_hashset.add(13);
-    custom_hashset.add(14);
-    custom_hashset.add(15);
-    custom_hashset.add(16);
+    for (int i = 0; i < 2048; i++) {
+        custom_hashset.add(i);
+    }
 }
 
 void standard_add() {
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 2048; i++) {
         standard_hashset.insert(i);
     }
 }
 
 void custom_remove() {
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 1024; i++) {
         custom_hashset.remove(i);
     }
 }
 
 void standard_remove() {
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 1024; i++) {
         standard_hashset.erase(i);
     }
 }
@@ -66,8 +50,21 @@ void standard_remove() {
 int main() {
     time(custom_add);
     time(standard_add);
-//    custom_hashset.debug();
     time(custom_remove);
     time(standard_remove);
-    cout << custom_hashset.size();
+//    cout << custom_hashset << "\n";
+
+    HashSet<int> set1;
+    set1.add(1);
+    set1.add(2);
+    set1.add(3);
+    set1.add(3);
+
+    HashSet<int> set2;
+    set2.add(3);
+    set2.add(1);
+    set2.add(2);
+    set2.add(2);
+
+//    cout << (set1 == set2) << "\n";
 }

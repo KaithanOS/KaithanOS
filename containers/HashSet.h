@@ -73,8 +73,6 @@ public:
         Vector<T>& bucket = hashset.get(hash_code(val));
         bucket.push_back(val);
         items++;
-        debug();
-//        cout<<hashset.get(hash_code(val - 1))<<hashset.get(hash_code(val))<<"\n";
         return true;
     }
 
@@ -103,7 +101,26 @@ public:
 
     // Override operators
 
+    string toString() {
+        string result = "[";
+        for (int i = 0; i < buckets; i++) {
+            Vector<T>& curr = hashset.get(i);
+            for (int j = 0; j < curr.size(); j++) {
+                result += to_string(curr.get(j)) + ", ";
+            }
+        }
+        result += "]";
+        return result;
+    }
 
+    friend ostream& operator<<(ostream& os, HashSet<T>& set) {
+        os << set.toString();
+        return os;
+    }
+
+    bool operator==(const HashSet<T>& set) const {
+        return toString() == set.toString();
+    }
 
     // Debugging output
 

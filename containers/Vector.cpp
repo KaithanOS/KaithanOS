@@ -106,7 +106,7 @@ int main() {
         cout << i << "\n";
     }
 //
-//    cout << intvec[2] << "\n";
+    cout << intvec << "\n";
 //
 //    intvec.debug();
 //    cout<<intvec<<"\n";
