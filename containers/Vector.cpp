@@ -77,111 +77,27 @@ void custom_set() {
 }
 
 
-//int main() {
-////    time(custom_push_back);
-////    time(standard_push_back);
-////
-////    time(custom_pop_back);
-////    time(standard_pop_back);
+int main() {
+//    time(custom_push_back);
+//    time(standard_push_back);
 //
-////    time(custom_push_back);
-////    time(custom_remove);
-//
-////    time(standard_push_back);
-////    time(standard_remove);
-////
-////    time(custom_push_back);
-////    time(custom_remove_ptr);
-//
-<<<<<<< HEAD
-    cout << intvec << "\n";
-=======
-//    Vector<int> intvec;
-//    for (int i = 0; i < 5; i++) {
-//        intvec.push_back(i);
-//    }
-////    intvec.push_back(1);
-////    intvec.push_back(2);
-////    intvec.push_back(3);
-////    intvec.push_back(4);
->>>>>>> 59109f65d9bce2e774daac0596160516c384f97b
-//
-//    for (int i : intvec) {
-//        cout << i << "\n";
-//    }
-////
-////    cout << intvec[2] << "\n";
-////
-////    intvec.debug();
-////    cout<<intvec<<"\n";
-////
-////    intvec.push_front(5);
-////    intvec.push_front(6);
-////    intvec.push_front(7);
-////    intvec.push_front(8);
-////
-////    intvec.debug();
-////    cout<<intvec<<"\n";
-////
-////    intvec.pop_back();
-////    intvec.pop_back();
-////    intvec.pop_back();
-////    intvec.pop_back();
-////    intvec.pop_back();
-////
-////    intvec.debug();
-////    cout<<intvec<<"\n";
-////
-////    Vector<int> intvec2;
-////    intvec2.push_back(8);
-////    intvec2.push_back(7);
-////    intvec2.push_back(6);
-////
-////    cout<<(intvec==intvec2)<<"\n";
-//
-////    Vector<int> vec2(intvec);
-////    cout<<vec2<<"\n";
-////    intvec.pop_front();
-////    intvec.debug();
-////    cout<<intvec.pop_front()<<"\n";
-//
-////
-////    Vector<int> intvec2;
-////    intvec2.push_back(2);
-////    intvec2.push_back(3);
-////    intvec2.push_back(4);
-////
-////    cout<<(intvec==intvec2)<<"\n";
-////
-////    intvec.debug();
-////    intvec2.debug();
-////
-////    cout<<intvec<<"\n";
-////    int num = 2;
-////    int* intptr = &num;
-////    cout<<intvec.remove(intptr)<<"\n";
-////    cout<<intvec<<"\n";
-////    intvec.push_front(5);
-////    intvec.push_front(6);
-////    intvec.push_front(7);
-////    cout<<intvec<<"\n";
-////    intvec.pop_front();
-////    cout<<intvec<<"\n";
-////    intvec.pop_front();
-////    cout<<intvec<<"\n";
-////    cout<<intvec.poll_front()<<"\n";
-////    cout<<intvec<<"\n";
-//
-//
-////    Vector<string> stringvec;
-////    stringvec.push_back("abc");
-////    stringvec.push_back("a");
-////    stringvec.push_back("b");
-////    stringvec.push_back("c");
-////    cout<<stringvec<<"\n";
-////    string str = "abc";
-////    string* strptr = &str;
-////    cout<<stringvec.remove(strptr)<<"\n";
-////    cout<<stringvec<<"\n";
-//
-//}
+//    time(custom_pop_back);
+//    time(standard_pop_back);
+
+    time(custom_push_back);
+    time(custom_remove);
+
+    time(standard_push_back);
+    time(standard_remove);
+
+    time(custom_push_back);
+    time(custom_remove_ptr);
+
+    Vector<int> intvec;
+    for (int i = 0; i < 5; i++) {
+        intvec.push_back(i);
+    }
+
+    intvec.debug();
+    cout<<intvec<<"\n";
+}
