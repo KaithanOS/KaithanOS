@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cstdio>
-#include <Vector.h>
+#include "Vector.h"
 #include <sstream>
 
 // Max heap implementation, custom comparator function supported.
@@ -24,7 +24,7 @@ private:
 
 public:
     static Heap heapify(Vector<T> vector) {
-        Heap<T> newHeap {};
+        Heap<T> newHeap;
         for (T& i : vector) {
             newHeap.push(i);
         }
@@ -33,18 +33,15 @@ public:
 
     // Custom constructors and destructors
     Heap() : comparator(default_greater) {
-        heap_array = Vector<T> {};
+        heap_array = Vector<T>(1, T{});
     }
 
-    explicit Heap(bool isMaxHeap) : comparator(isMaxHeap ? default_greater : default_less) {}
-
-    explicit Heap(int (*customComparator)(const T&, const T&)) : comparator(customComparator) {
-        heap_array = Vector<T> {};
-        heap_array.push_back(nullptr);
+    explicit Heap(bool isMaxHeap) : comparator(isMaxHeap ? default_greater : default_less) {
+        heap_array = Vector<T>(1, T{});
     }
 
-    ~Heap() {
-        delete heap_array;
+    explicit Heap(bool (*customComparator)(const T&, const T&)) : comparator(customComparator) {
+        heap_array = Vector<T>(1, T{});
     }
 
     // Accessors
@@ -69,7 +66,7 @@ public:
         if (empty()) {
             throw runtime_error("Index out of bounds");
         } else {
-            T polledValue = heap_array.peek_front();
+            T polledValue = heap_array[1];
             heap_array[1] = heap_array[size()];
             heap_array.pop_back();
             bubble_down(1);
@@ -77,19 +74,22 @@ public:
         }
     }
 
-    T bubble_down(int root) {
+    void bubble_down(int root) {
+
         if (root > size()) return;
         int left_child = root * 2;
         int right_child = left_child + 1;
+        if (left_child > size() && right_child > size()) return;
+
         if ((left_child <= size() && !comparator(heap_array[root], heap_array[left_child])) ||
         (right_child <= size() && !comparator(heap_array[root], heap_array[right_child]))) {
-            if (comparator(heap_array[left_child], heap_array[right_child]) || right_child > size()) {
+            if (right_child > size() || (left_child <= size() && comparator(heap_array[left_child], heap_array[right_child]))) {
                 T& temp = heap_array[left_child];
                 heap_array[left_child] = heap_array[root];
                 heap_array[root] = temp;
                 bubble_down(left_child);
             }
-            if (comparator(heap_array[right_child], heap_array[left_child]) || left_child > size()) {
+            if (left_child > size() || (right_child <= size() && comparator(heap_array[right_child], heap_array[left_child]))) {
                 T& temp = heap_array[right_child];
                 heap_array[right_child] = heap_array[root];
                 heap_array[root] = temp;
@@ -98,19 +98,19 @@ public:
         }
     }
 
-    void bubble_up(int size, int position) {
+    void bubble_up(int position) {
         int parent = position / 2;
-        if (parent >= 0) {
+        if (parent >= 1 && parent != position) {
             if (comparator(heap_array[position], heap_array[parent])) {
                 swap(heap_array[position], heap_array[parent]);
-                heapify(heap_array, size, parent);
+                bubble_up(parent);
             }
         }
     }
 
-    void push(T& val) {
+    void push(const T& val) {
         heap_array.push_back(val);
-        bubble_up(heap_array.size(), heap_array.size() - 1);
+        bubble_up(size());
     }
 };
 
