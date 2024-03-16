@@ -49,21 +49,44 @@ public:
     }
 
     bool contains_key(T key) {
-        Vector<Pair<T, U> > bucket = hashmap.get(hash_code(key));
-        for (Pair<T, U> pair : bucket) {
-            if (pair.get_first() == key) {
+        Vector<Pair<T, U> >& bucket = hashmap.get(hash_code(key));
+        for (int i = 0; i < bucket.size(); i++) {
+            if (bucket.get(i).get_first() == key) {
                 return true;
             }
         }
         return false;
     }
 
+    U& get(T key) {
+        Vector<Pair<T, U> >& bucket = hashmap.get(hash_code(key));
+        for (int i = 0; i < bucket.size(); i++) {
+            if (bucket.get(i).get_first() == key) {
+                return bucket.get(i).get_second();
+            }
+        }
+        throw runtime_error("Could not retrieve item");
+    }
+
     // Add & remove
 
     bool put(T key, U val) {
-        if (contains_key(key)) {
-            return false;
-        } else if (items + 1 > (3 * buckets) / 4) {
+        bool added = false;
+        Vector<Pair<T, U> >& bucket = hashmap.get(hash_code(key));
+        for (int i = 0; i < bucket.size(); i++) {
+            if (bucket.get(i).get_first() == key) {
+                bucket.get(i).set_second(val);
+                added = true;
+            }
+        }
+
+        if (!added) {
+            Pair<T, U> pair(key, val);
+            bucket.push_back(pair);
+            items++;
+        }
+
+        if (items > (3 * buckets) / 4) {
             Vector<Pair<T, U> > bucket;
             Vector<Vector<Pair<T, U> > > new_map(2 * buckets, bucket);
             for (int i = 0; i < buckets; i++) {
@@ -76,11 +99,6 @@ public:
             hashmap = new_map;
             buckets *= 2;
         }
-
-        Vector<Pair<T, U> >& bucket = hashmap.get(hash_code(key));
-        Pair<T, U> pair(key, val);
-        bucket.push_back(pair);
-        items++;
         return true;
     }
 
@@ -126,17 +144,13 @@ public:
     }
 
     U& operator[](T key) {
-        if (contains_key(key)) {
-            Vector<Pair<T, U> > bucket = hashmap.get(hash_code(key));
-            for (Pair<T, U> pair : bucket) {
-                if (pair.get_first() == key) {
-                    return pair.get_second();
-                }
+        Vector<Pair<T, U> >& bucket = hashmap.get(hash_code(key));
+        for (int i = 0; i < bucket.size(); i++) {
+            if (bucket.get(i).get_first() == key) {
+                return bucket.get(i).get_second();
             }
-            throw runtime_error("Could not retrieve item");
-        } else {
-            throw runtime_error("Index out of bounds");
         }
+        throw runtime_error("Could not retrieve item");
     }
 
     // Debugging output

@@ -43,6 +43,14 @@ public:
         return second;
     }
 
+    void set_first(T& f) {
+        first = f;
+    }
+
+    void set_second(U& s) {
+        second = s;
+    }
+
     // Override operators
 
     friend ostream& operator<<(ostream& os, Pair<T, U>& pair) {

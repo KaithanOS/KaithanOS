@@ -9,6 +9,7 @@
 using namespace std;
 
 HashMap<int, string> custom_hashmap;
+HashMap<int, string> custom_hashmap2;
 unordered_map<int, string> standard_hashmap;
 
 void time(void (*func)()) {
@@ -24,6 +25,12 @@ void time(void (*func)()) {
 void custom_add() {
     for (int i = 0; i < 2048; i++) {
         custom_hashmap.put(i, "hello");
+    }
+}
+
+void custom_add2() {
+    for (int i = 0; i < 2048; i++) {
+        custom_hashmap2.put2(i, "hello");
     }
 }
 
@@ -48,10 +55,13 @@ void standard_remove() {
 
 
 int main() {
-    time(custom_add);
     time(standard_add);
+    time(custom_add);
+    time(custom_add2);
     time(custom_remove);
     time(standard_remove);
 //    cout << custom_hashmap << "\n";
-    cout << custom_hashmap[1900] << "\n";
+    custom_hashmap[1900] = "bye";
+    string s = custom_hashmap[1900];
+    cout << s << "\n";
 }
