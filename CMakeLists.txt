@@ -7,4 +7,5 @@ include_directories(containers)
 
 add_executable(KaithanOS
         containers/Vector.cpp
-        containers/Vector.h containers/Heap.h)
+        containers/Vector.h containers/Heap.h
+        containers/HashSet.h)
