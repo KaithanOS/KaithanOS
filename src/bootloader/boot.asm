@@ -105,7 +105,7 @@ start:
     mov bx, buffer                      ; es:bx = buffer
     call disk_read
 
-    ; search for kernel.bin
+    ; search for KERNEL.BIN
     xor bx, bx
     mov di, buffer
 
@@ -232,6 +232,7 @@ puts:
     ; save registers we will modify
     push si
     push ax
+    push bx
 
 .loop:
     lodsb                   ; loads next character in al
@@ -245,6 +246,7 @@ puts:
     jmp .loop
 
 .done:
+    pop bx
     pop ax
     pop si
     ret
