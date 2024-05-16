@@ -1,7 +1,9 @@
 org 0x7C00
 bits 16
 
+
 %define ENDL 0x0D, 0x0A
+
 
 ;
 ; FAT12 header
@@ -16,7 +18,7 @@ bdb_reserved_sectors:       dw 1
 bdb_fat_count:              db 2
 bdb_dir_entries_count:      dw 0E0h
 bdb_total_sectors:          dw 2880                 ; 2880 * 512 = 1.44MB
-bdb_media_descriptor_type:   db 0F0h                 ; F0 = 3.5" floppy disk
+bdb_media_descriptor_type:  db 0F0h                 ; F0 = 3.5" floppy disk
 bdb_sectors_per_fat:        dw 9                    ; 9 sectors/fat
 bdb_sectors_per_track:      dw 18
 bdb_heads:                  dw 2
@@ -28,7 +30,7 @@ ebr_drive_number:           db 0                    ; 0x00 floppy, 0x80 hdd, use
                             db 0                    ; reserved
 ebr_signature:              db 29h
 ebr_volume_id:              db 12h, 34h, 56h, 78h   ; serial number, value doesn't matter
-ebr_volume_label:           db 'KAITHAN  OS'        ; 11 bytes, padded with spaces
+ebr_volume_label:           db 'NANOBYTE OS'        ; 11 bytes, padded with spaces
 ebr_system_id:              db 'FAT12   '           ; 8 bytes
 
 ;
@@ -37,13 +39,13 @@ ebr_system_id:              db 'FAT12   '           ; 8 bytes
 
 start:
     ; setup data segments
-    mov ax, 0               ; can't write to ds/es directly
+    mov ax, 0           ; can't set ds/es directly
     mov ds, ax
     mov es, ax
 
     ; setup stack
     mov ss, ax
-    mov sp, 0x7C00          ; stack grows downwards from where we are loaded in memory
+    mov sp, 0x7C00              ; stack grows downwards from where we are loaded in memory
 
     ; some BIOSes might start us at 07C0:0000 instead of 0000:7C00, make sure we are in the
     ; expected location
@@ -61,7 +63,7 @@ start:
     mov si, msg_loading
     call puts
 
-    ; read drive parameters (sectors per track and head count)
+    ; read drive parameters (sectors per track and head count),
     ; instead of relying on data on formatted disk
     push es
     mov ah, 08h
@@ -85,7 +87,7 @@ start:
     add ax, [bdb_reserved_sectors]      ; ax = LBA of root directory
     push ax
 
-    ; computer size of root directory = (32 * number_of_entries) / bytes_per_sector
+    ; compute size of root directory = (32 * number_of_entries) / bytes_per_sector
     mov ax, [bdb_dir_entries_count]
     shl ax, 5                           ; ax *= 32
     xor dx, dx                          ; dx = 0
@@ -95,7 +97,6 @@ start:
     jz .root_dir_after
     inc ax                              ; division remainder != 0, add 1
                                         ; this means we have a sector only partially filled with entries
-
 .root_dir_after:
 
     ; read root directory
@@ -218,11 +219,11 @@ kernel_not_found_error:
 
 wait_key_and_reboot:
     mov ah, 0
-    int 16h                 ; wait for keypress
-    jmp 0FFFFh:0            ; jump to beginning of BIOS, should reboot
+    int 16h                     ; wait for keypress
+    jmp 0FFFFh:0                ; jump to beginning of BIOS, should reboot
 
 .halt:
-    cli                     ; disable interrupts, this way CPU can't get out of "halt" state
+    cli                         ; disable interrupts, this way CPU can't get out of "halt" state
     hlt
 
 
@@ -238,12 +239,12 @@ puts:
     push bx
 
 .loop:
-    lodsb                   ; loads next character in al
-    or al, al               ; verify if next character is null?
+    lodsb               ; loads next character in al
+    or al, al           ; verify if next character is null?
     jz .done
 
-    mov ah, 0x0E            ; call bios interrupt
-    mov bh, 0               ; set page number to 0
+    mov ah, 0x0E        ; call bios interrupt
+    mov bh, 0           ; set page number to 0
     int 0x10
 
     jmp .loop
@@ -260,13 +261,14 @@ puts:
 
 ;
 ; Converts an LBA address to a CHS address
-; Paramters:
+; Parameters:
 ;   - ax: LBA address
 ; Returns:
 ;   - cx [bits 0-5]: sector number
 ;   - cx [bits 6-15]: cylinder
 ;   - dh: head
 ;
+
 lba_to_chs:
 
     push ax
@@ -291,6 +293,7 @@ lba_to_chs:
     mov dl, al                          ; restore DL
     pop ax
     ret
+
 
 ;
 ; Reads sectors from a disk
@@ -330,7 +333,7 @@ disk_read:
     jnz .retry
 
 .fail:
-    ;all attempts are exhausted
+    ; all attempts are exhausted
     jmp floppy_error
 
 .done:
@@ -342,6 +345,7 @@ disk_read:
     pop bx
     pop ax                             ; restore registers modified
     ret
+
 
 ;
 ; Resets disk controller
@@ -357,6 +361,7 @@ disk_reset:
     popa
     ret
 
+
 msg_loading:            db 'Loading...', ENDL, 0
 msg_read_failed:        db 'Read from disk failed!', ENDL, 0
 msg_kernel_not_found:   db 'KERNEL.BIN file not found!', ENDL, 0
@@ -365,6 +370,7 @@ kernel_cluster:         dw 0
 
 KERNEL_LOAD_SEGMENT     equ 0x2000
 KERNEL_LOAD_OFFSET      equ 0
+
 
 times 510-($-$$) db 0
 dw 0AA55h
