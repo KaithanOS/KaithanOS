@@ -1,41 +1,23 @@
-org 0x0
-bits 16
+bits 16 // writing 16 bit code
 
-%define ENDL 0x0D, 0x0A
+section _ENTRY class=CODE
 
-start:
-    ; print hello world message
-    mov si, msg_hello
-    call puts
+extern _cstart_
+global entry
 
-.halt:
+entry:
     cli
-    hlt
+    mov ax, ds
+    moc ss, ax
+    mov sp, 0
+    mov bp, sp
+    sti
 
-;
-; Prints a string to the screen.
-; Params:
-;   - ds:si points to string
-;
-puts:
-    ; save registers we will modify
-    push si
-    push ax
+    ; expect boot drive in dl, send as argument to cstart
+    xor dh, dh
+    push dx
+    call _cstart_
 
-.loop:
-    lodsb               ; loads next character in al
-    or al, al           ; verify if next character is null?
-    jz .done
+    cli hlt
 
-    mov ah, 0x0E       ; call bios interrupt
-    mov bh, 0
-    int 0x10
 
-    jmp .loop
-
-.done:
-    pop ax
-    pop si
-    ret
-
-msg_hello: db 'Hello world!', ENDL, 0
