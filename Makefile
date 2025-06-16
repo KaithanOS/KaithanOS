@@ -1,9 +1,12 @@
 ASM=nasm
+CC=gcc
 
 SRC_DIR=src
 BUILD_DIR=build
 
 .PHONY: all floppy_image kernel bootloader clean always
+
+all: floppy_image
 
 floppy_image: $(BUILD_DIR)/main_floppy.img
 
@@ -12,8 +15,6 @@ $(BUILD_DIR)/main_floppy.img: bootloader kernel
 	mkfs.fat -F 12 -n "NBOS" $(BUILD_DIR)/main_floppy.img
 	dd if=$(BUILD_DIR)/bootloader.bin of=$(BUILD_DIR)/main_floppy.img conv=notrunc
 	mcopy -i $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/kernel.bin "::kernel.bin"
-	cp $(BUILD_DIR)/main.bin $(BUILD_DIR)/main_floppy.img
-	truncate -s 1440k $(BUILD_DIR)/main_floppy.img
 
 bootloader: $(BUILD_DIR)/bootloader.bin
 

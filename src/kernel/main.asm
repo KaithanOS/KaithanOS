@@ -2,9 +2,14 @@ org 0x0 ; calculate all memory offsets from here -> this is a directive
 bits 16 ; Emit 16 bit code
 
 %define ENDL 0x0D, 0x0A
+
 start:
     mov si, msg_hello
     call puts
+
+.halt:
+    cli
+    hlt
 
 ; Prints string to screen
 ; Params - ds:si points to string
