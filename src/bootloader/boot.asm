@@ -43,11 +43,13 @@ puts:
     jz .done ; jump if zero flag set
 
     mov ah, 0x0e
+    mov bh, 0
     int 0x10
 
     jmp .loop
 
 .done:
+    pop bx
     pop ax
     pop si
     ret
@@ -83,7 +85,6 @@ wait_key_and_reboot:
     mov ah, 0
     int 16h
     jmp 0FFFFh:0
-    hlt
 
 .halt:
     cli
