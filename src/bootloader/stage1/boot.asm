@@ -93,31 +93,31 @@ start:
   mov bx, buffer
   call disk_read
 
-  ; search for kernel
+  ; search for STAGE2
   xor bx, bx
   mov di, buffer
 
-.search_kernel:
-  mov si, file_kernel_bin
+.search_STAGE2:
+  mov si, file_STAGE2_bin
   mov cx, 11
   push di
   repe cmpsb
   pop di
-  je .found_kernel
+  je .found_STAGE2
 
   add di, 32
   inc bx
   cmp bx, [bdb_dir_entries_count]
-  jl .search_kernel
+  jl .search_STAGE2
 
-  ; kernel not found
-  jmp kernel_not_found_error
+  ; STAGE2 not found
+  jmp STAGE2_not_found_error
 
-.found_kernel:
+.found_STAGE2:
 
   ; di should have the address to the entry
   mov ax, [di + 26]
-  mov [kernel_cluster], ax
+  mov [STAGE2_cluster], ax
 
   mov ax, [bdb_reserved_sectors]
   mov bx, buffer
@@ -125,14 +125,14 @@ start:
   mov dl, [ebr_drive_number]
   call disk_read
 
-  ; read kernel and process FAT chain
-  mov bx, KERNEL_LOAD_SEGMENT
+  ; read STAGE2 and process FAT chain
+  mov bx, STAGE2_LOAD_SEGMENT
   mov es, bx
-  mov bx, KERNEL_LOAD_OFFSET
+  mov bx, STAGE2_LOAD_OFFSET
 
-.load_kernel_loop:
+.load_STAGE2_loop:
   ; read next cluster
-  mov ax, [kernel_cluster]
+  mov ax, [STAGE2_cluster]
   add ax, 31
   mov cl, 1
   mov dl, [ebr_drive_number]
@@ -141,7 +141,7 @@ start:
   add bx, [bdb_bytes_per_sector]
 
   ; compute location of next cluster
-  mov ax, [kernel_cluster]
+  mov ax, [STAGE2_cluster]
   mov cx, 3
   mul cx
   mov cx, 2
@@ -164,19 +164,19 @@ start:
 .next_cluster_after:
   cmp ax, 0x0FF8
   jae .read_finish
-  mov [kernel_cluster], ax
-  jmp .load_kernel_loop
+  mov [STAGE2_cluster], ax
+  jmp .load_STAGE2_loop
 
 .read_finish:
 
-  ; jump to kernel
+  ; jump to STAGE2
   mov dl, [ebr_drive_number]
 
-  mov ax, KERNEL_LOAD_SEGMENT
+  mov ax, STAGE2_LOAD_SEGMENT
   mov ds, ax
   mov es, ax
 
-  jmp KERNEL_LOAD_SEGMENT:KERNEL_LOAD_OFFSET
+  jmp STAGE2_LOAD_SEGMENT:STAGE2_LOAD_OFFSET
 
   jmp wait_key_and_reboot
 
@@ -189,8 +189,8 @@ floppy_error:
   call puts
   jmp wait_key_and_reboot
 
-kernel_not_found_error:
-  mov si, msg_kernel_not_found
+STAGE2_not_found_error:
+  mov si, msg_STAGE2_not_found
   call puts
   jmp wait_key_and_reboot
 
@@ -324,12 +324,12 @@ disk_reset:
 
 msg_loading: db 'Loading...', ENDL, 0
 msg_read_failed: db 'Read from disk failed!', ENDL, 0
-msg_kernel_not_found: db 'KERNEL.BIN file not found!', ENDL, 0
-file_kernel_bin: db 'KERNEL  BIN', ENDL, 0
-kernel_cluster: dw 0
+msg_stage2_not_found: db 'STAGE2.BIN file not found!', ENDL, 0
+file_stage2_bin: db 'STAGE2  BIN', ENDL, 0
+stage2_cluster: dw 0
 
-KERNEL_LOAD_SEGMENT equ 0x2000
-KERNEL_LOAD_OFFSET equ 0
+STAGE2_LOAD_SEGMENT equ 0x2000
+STAGE2_LOAD_OFFSET equ 0
 
 ; db is an instruction that writes given byte(s) to the assembled binary file
 ; this line essentially calculates 510 minus (current line's address minus beginning of current section, or in other words, the length of the program)
