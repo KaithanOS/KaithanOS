@@ -97,27 +97,27 @@ start:
   xor bx, bx
   mov di, buffer
 
-.search_STAGE2:
-  mov si, file_STAGE2_bin
+.search_stage2:
+  mov si, file_stage2_bin
   mov cx, 11
   push di
   repe cmpsb
   pop di
-  je .found_STAGE2
+  je .found_stage2
 
   add di, 32
   inc bx
   cmp bx, [bdb_dir_entries_count]
-  jl .search_STAGE2
+  jl .search_stage2
 
-  ; STAGE2 not found
-  jmp STAGE2_not_found_error
+  ; stage2 not found
+  jmp stage2_not_found_error
 
-.found_STAGE2:
+.found_stage2:
 
   ; di should have the address to the entry
   mov ax, [di + 26]
-  mov [STAGE2_cluster], ax
+  mov [stage2_cluster], ax
 
   mov ax, [bdb_reserved_sectors]
   mov bx, buffer
@@ -125,14 +125,14 @@ start:
   mov dl, [ebr_drive_number]
   call disk_read
 
-  ; read STAGE2 and process FAT chain
+  ; read stage2 and process FAT chain
   mov bx, STAGE2_LOAD_SEGMENT
   mov es, bx
   mov bx, STAGE2_LOAD_OFFSET
 
-.load_STAGE2_loop:
+.load_stage2_loop:
   ; read next cluster
-  mov ax, [STAGE2_cluster]
+  mov ax, [stage2_cluster]
   add ax, 31
   mov cl, 1
   mov dl, [ebr_drive_number]
@@ -141,7 +141,7 @@ start:
   add bx, [bdb_bytes_per_sector]
 
   ; compute location of next cluster
-  mov ax, [STAGE2_cluster]
+  mov ax, [stage2_cluster]
   mov cx, 3
   mul cx
   mov cx, 2
@@ -164,12 +164,12 @@ start:
 .next_cluster_after:
   cmp ax, 0x0FF8
   jae .read_finish
-  mov [STAGE2_cluster], ax
-  jmp .load_STAGE2_loop
+  mov [stage2_cluster], ax
+  jmp .load_stage2_loop
 
 .read_finish:
 
-  ; jump to STAGE2
+  ; jump to stage2
   mov dl, [ebr_drive_number]
 
   mov ax, STAGE2_LOAD_SEGMENT
@@ -189,8 +189,8 @@ floppy_error:
   call puts
   jmp wait_key_and_reboot
 
-STAGE2_not_found_error:
-  mov si, msg_STAGE2_not_found
+stage2_not_found_error:
+  mov si, msg_stage2_not_found
   call puts
   jmp wait_key_and_reboot
 
